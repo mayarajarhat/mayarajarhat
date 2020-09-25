@@ -52,6 +52,7 @@
 		addBtn.style.display = 'block';
 		addBtn.addEventListener('click', (e) => {
 			addBtn.style.display = 'none';
+			document.documentElement.requestFullscreen();
 			deferredPrompt.prompt();
 			deferredPrompt.userChoice.then((choiceResult) => {
 				deferredPrompt = null;
