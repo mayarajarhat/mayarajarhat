@@ -52,7 +52,6 @@
 		addBtn.style.display = 'block';
 		addBtn.addEventListener('click', (e) => {
 			addBtn.style.display = 'none';
-			document.documentElement.requestFullscreen();
 			deferredPrompt.prompt();
 			deferredPrompt.userChoice.then((choiceResult) => {
 				deferredPrompt = null;
@@ -60,6 +59,7 @@
 		});
 	});
 	function loadapp(url){
+		document.documentElement.requestFullscreen();
 		document.getElementById("gh_app").style.display = "none";
 		document.getElementById("uiblock").style.display = "block";
 		document.getElementById('ga_app').onload = function(){
