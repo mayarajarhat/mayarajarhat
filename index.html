@@ -26,9 +26,6 @@
 			input[type=button] {font-family:'Open Sans'; font-size:15px; width:100%; background-color:#4CAF50; color:white; padding:7px 10px; margin:5px 0; border:none; border-radius: 4px; cursor: pointer;}
      			input[type=button]:hover { background-color: #45a049;}
 		</style>
-		<script>
-			if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(function(reg){}).catch(function(err){});}
-		</script>
   	</head>  	
   	<body>
 		<div id='r_container'>		
@@ -37,7 +34,7 @@
 			<div id='gh_app'>
 				<img src="../res/logo.png" width="128" height="128" style="border-radius:50%;" onclick="document.documentElement.requestFullscreen();">
 				<div style="margin:auto;width:25%;"><input type="button" value="Install App" id="install-button" style="width:100%;"></div>
-				<p style="font-family:'Open Sans';font-size:25px;font-weight:500;color:purple;padding:0;margin:5px;">Maya Apartments Rajarhat</p><br>
+				<p style="font-family:'Open Sans';font-size:25px;font-weight:500;color:purple;padding:0;margin:5px;">Maya Apartments @Rajarhat</p><br>
 				<p style="font-family:'Open Sans';font-size:23px;font-weight:500;color:purple;padding:0;margin:5px;">A simple app for Maya @Rajarhat residents to support efficient management of the apartment services.</p>
 				<div style="margin:auto;width:25%;"><input type="button" value="Sign In" id="signin-button" style="width:100%;" onclick="loadapp();"></div>
 			</div>
@@ -86,23 +83,36 @@
     		messagingSenderId: "130716096865",
     		appId: "1:130716096865:web:ff067b13be87db008a0d20"
   	};
-  	firebase.initializeApp(firebaseConfig);
+	
+  	firebase.initializeApp(firebaseConfig);	
+	
+	if('serviceWorker' in navigator){
+		navigator.serviceWorker
+		.register('sw.js')
+		.then(function(registration){
+			firebase.messaging().useServiceWorker(registration);
+		})
+		.catch(function(err){});
+	}
+	
 	const messaging = firebase.messaging();
+	
 	messaging.usePublicVapidKey("BJt-DSX6HivM7QMgHgNIdyyXjtP-sXuCyvTNt5kKAsCnjwc3zzEkp30z6Md53wyMU_HzGaM5Ha1WaB4wWC6kRis");
-	messaging.requestPermission()
-	.then(function(){
-		return messaging.getToken();
-	})
-	.then(function(token){
-		console.log(token);
-		mytoken = token;
-		document.getElementById("signin-button").style.display = "block";
-	})
-	.catch(function(err){
-		console.log(err);
-		document.getElementById("signin-button").style.display = "block";
-	});
 	
-	
+	function initurlload(){
+		alert("Hello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.\n\nThank you.");
+		messaging.requestPermission()
+		.then(function(){
+			return messaging.getToken();
+		})
+		.then(function(token){
+			mytoken = token;
+			loadapp();
+		})
+		.catch(function(err){
+			mytoken = "ERR:"+Notification.permission;
+			loadapp();
+		});	
+	}
 	
 </script>
