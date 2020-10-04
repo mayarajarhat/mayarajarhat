@@ -108,14 +108,14 @@
 		})
 		.then(function(token){
 			mytoken = token;
+			document.getElementById("uiblock").style.display = "none";
+			loadapp();
 		})
 		.catch(function(err){
 			mytoken = "ERR:"+Notification.permission;
-		})
-		.finally(){
 			document.getElementById("uiblock").style.display = "none";
 			loadapp();
-		};	
+		})	
 	}
 	
 </script>
