@@ -13,6 +13,8 @@
 	  	<link rel='shortcut icon' href='favicon.png' type='image/png'>
 		<link rel='manifest' href='manifest.json'>  
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans&display=swap' rel='stylesheet'>
+		<script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-messaging.js"></script>
 		<style>
 			@media screen and (max-width: 430px) {#r_container {width: 100%; text-align:center;margin:0 auto;padding:0 0;}}
 	 		@media screen and (min-width: 431px) {#r_container {width: 430px; text-align:center;margin:0 auto;padding:0 0;}}
@@ -35,15 +37,16 @@
 			<div id='gh_app'>
 				<img src="../res/logo.png" width="128" height="128" style="border-radius:50%;" onclick="document.documentElement.requestFullscreen();">
 				<div style="margin:auto;width:25%;"><input type="button" value="Install App" id="install-button" style="width:100%;"></div>
-				<p style="font-family:'Open Sans';font-size:25px;font-weight:500;color:purple;padding:0;margin:5px;">Maya Apartments @Rajarhat</p><br>
+				<p style="font-family:'Open Sans';font-size:25px;font-weight:500;color:purple;padding:0;margin:5px;">Maya Apartments Rajarhat</p><br>
 				<p style="font-family:'Open Sans';font-size:23px;font-weight:500;color:purple;padding:0;margin:5px;">A simple app for Maya @Rajarhat residents to support efficient management of the apartment services.</p>
-				<div style="margin:auto;width:25%;"><input type="button" value="Sign In" id="signin-button" style="width:100%;" onclick="loadapp('https://script.google.com/macros/s/AKfycbyU4afUV01yzvk7xitRM05_sbKDrf95dQeE47PNfYitEOpXl-E/exec');"></div>
+				<div style="margin:auto;width:25%;"><input type="button" value="Sign In" id="signin-button" style="width:100%;" onclick="loadapp();"></div>
 			</div>
 		</div>
 	</body>
 </html>
 <script>
-	var myurl = "TBD";
+	var mytoken = '';
+	document.getElementById("signin-button").style.display = "none";	
 	document.getElementById("ga_app").style.display = "none";
 	let deferredPrompt;
 	const addBtn = document.getElementById('install-button');
@@ -60,15 +63,46 @@
 			});
 		});
 	});
-	function loadapp(url){
+	
+	function loadapp(){
+		var url = 'https://script.google.com/macros/s/AKfycbyU4afUV01yzvk7xitRM05_sbKDrf95dQeE47PNfYitEOpXl-E/exec?t='+mytoken;
 		document.documentElement.requestFullscreen();
 		document.getElementById("gh_app").style.display = "none";
 		document.getElementById("uiblock").style.display = "block";
 		document.getElementById('ga_app').onload = function(){
 			 document.getElementById("uiblock").style.display = "none";
 		};
-		myurl = url;
 		document.getElementById("ga_app").src = url;
 		document.getElementById("ga_app").style.display = "block";
 	}
+	
+	
+  	var firebaseConfig = {
+    		apiKey: "AIzaSyCyaZuTbX4Q1dMQ5xU4j6M0Logq3rTDPyY",
+    		authDomain: "maya-apartment.firebaseapp.com",
+    		databaseURL: "https://maya-apartment.firebaseio.com",
+    		projectId: "maya-apartment",
+    		storageBucket: "maya-apartment.appspot.com",
+    		messagingSenderId: "130716096865",
+    		appId: "1:130716096865:web:ff067b13be87db008a0d20"
+  	};
+  	firebase.initializeApp(firebaseConfig);
+	const messaging = firebase.messaging();
+	messaging.usePublicVapidKey("BJt-DSX6HivM7QMgHgNIdyyXjtP-sXuCyvTNt5kKAsCnjwc3zzEkp30z6Md53wyMU_HzGaM5Ha1WaB4wWC6kRis");
+	messaging.requestPermission()
+	.then(function(){
+		return messaging.getToken();
+	})
+	.then(function(token){
+		console.log(token);
+		mytoken = token;
+		document.getElementById("signin-button").style.display = "block";
+	})
+	.catch(function(err){
+		console.log(err);
+		document.getElementById("signin-button").style.display = "block";
+	});
+	
+	
+	
 </script>
