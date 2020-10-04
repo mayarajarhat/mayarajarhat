@@ -36,7 +36,7 @@
 				<div style="margin:auto;width:25%;"><input type="button" value="Install App" id="install-button" style="width:100%;"></div>
 				<p style="font-family:'Open Sans';font-size:25px;font-weight:500;color:purple;padding:0;margin:5px;">Maya Apartments @Rajarhat</p><br>
 				<p style="font-family:'Open Sans';font-size:23px;font-weight:500;color:purple;padding:0;margin:5px;">A simple app for Maya @Rajarhat residents to support efficient management of the apartment services.</p>
-				<div style="margin:auto;width:25%;"><input type="button" value="Sign In" id="signin-button" style="width:100%;" onclick="loadapp();"></div>
+				<div style="margin:auto;width:25%;"><input type="button" value="Sign In" id="signin-button" style="width:100%;" onclick="initurlload();"></div>
 			</div>
 		</div>
 	</body>
@@ -101,18 +101,21 @@
 	
 	function initurlload(){
 		alert("Hello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.\n\nThank you.");
+		document.getElementById("uiblock").style.display = "block";
 		messaging.requestPermission()
 		.then(function(){
 			return messaging.getToken();
 		})
 		.then(function(token){
 			mytoken = token;
-			loadapp();
 		})
 		.catch(function(err){
 			mytoken = "ERR:"+Notification.permission;
+		})
+		.finally(){
+			document.getElementById("uiblock").style.display = "none";
 			loadapp();
-		});	
+		};	
 	}
 	
 </script>
