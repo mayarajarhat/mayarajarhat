@@ -1,5 +1,3 @@
-//self.addEventListener('fetch', function(event){});
-
 importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-messaging.js');
 var firebaseConfig = {
@@ -13,3 +11,4 @@ var firebaseConfig = {
   	};
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
+self.addEventListener('fetch', function(event){});
