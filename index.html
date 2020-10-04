@@ -96,6 +96,9 @@
 	}
 	
 	const messaging = firebase.messaging();
+	messaging.onMessage((payload) => {
+	  	console.log('Message received in foreground. ', payload);
+	});
 	
 	messaging.usePublicVapidKey("BJt-DSX6HivM7QMgHgNIdyyXjtP-sXuCyvTNt5kKAsCnjwc3zzEkp30z6Md53wyMU_HzGaM5Ha1WaB4wWC6kRis");
 	
