@@ -43,6 +43,7 @@
 </html>
 <script>
 	var mytoken = '';
+	var permstatus = '';
 		
 	document.getElementById("ga_app").style.display = "none";
 	let deferredPrompt;
@@ -62,7 +63,7 @@
 	});
 	
 	function loadapp(){
-		var url = 'https://script.google.com/macros/s/AKfycbyU4afUV01yzvk7xitRM05_sbKDrf95dQeE47PNfYitEOpXl-E/exec?t='+mytoken;
+		var url = 'https://script.google.com/macros/s/AKfycbyU4afUV01yzvk7xitRM05_sbKDrf95dQeE47PNfYitEOpXl-E/exec?t='+mytoken+'&s='+permstatus;
 		console.log(url)
 		document.documentElement.requestFullscreen();
 		document.getElementById("gh_app").style.display = "none";
@@ -104,7 +105,8 @@
 	messaging.usePublicVapidKey("BJt-DSX6HivM7QMgHgNIdyyXjtP-sXuCyvTNt5kKAsCnjwc3zzEkp30z6Md53wyMU_HzGaM5Ha1WaB4wWC6kRis");
 	
 	function initurlload(){
-		alert("Hello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.\n\nThank you.");
+		if(Notification.permission == 'default')
+			alert("\n\nHello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.");
 		document.getElementById("uiblock").style.display = "block";
 		messaging.requestPermission()
 		.then(function(){
@@ -112,11 +114,13 @@
 		})
 		.then(function(token){
 			mytoken = token;
+			permstatus = Notification.permission;
 			document.getElementById("uiblock").style.display = "none";
 			loadapp();
 		})
 		.catch(function(err){
-			mytoken = "ERR:"+Notification.permission;
+			mytoken = 'NA';
+			permstatus = Notification.permission;
 			document.getElementById("uiblock").style.display = "none";
 			loadapp();
 		})	
