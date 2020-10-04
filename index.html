@@ -106,7 +106,7 @@
 	
 	function initurlload(){
 		if(Notification.permission == 'default')
-			alert("\n\nHello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.");
+			alert("\nHello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.");
 		document.getElementById("uiblock").style.display = "block";
 		messaging.requestPermission()
 		.then(function(){
