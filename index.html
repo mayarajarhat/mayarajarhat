@@ -15,6 +15,7 @@
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans&display=swap' rel='stylesheet'>
 		<script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-messaging.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<style>
 			@media screen and (max-width: 430px) {#r_container {width: 100%; text-align:center;margin:0 auto;padding:0 0;}}
 	 		@media screen and (min-width: 431px) {#r_container {width: 430px; text-align:center;margin:0 auto;padding:0 0;}}
@@ -44,27 +45,9 @@
 <script>
 	var mytoken = '';
 	var permstatus = '';
-		
-	document.getElementById("ga_app").style.display = "none";
-	let deferredPrompt;
-	const addBtn = document.getElementById('install-button');
-	addBtn.style.display = 'none';
-	window.addEventListener('beforeinstallprompt', (e) => {
-		e.preventDefault();
-		deferredPrompt = e;
-		addBtn.style.display = 'block';
-		addBtn.addEventListener('click', (e) => {
-			addBtn.style.display = 'none';
-			deferredPrompt.prompt();
-			deferredPrompt.userChoice.then((choiceResult) => {
-				deferredPrompt = null;
-			});
-		});
-	});
-	
+	document.getElementById("signin-button").style.display = "none";
 	function loadapp(){
 		var url = 'https://script.google.com/macros/s/AKfycbyU4afUV01yzvk7xitRM05_sbKDrf95dQeE47PNfYitEOpXl-E/exec?t='+mytoken+'&s='+permstatus;
-		console.log(url)
 		document.documentElement.requestFullscreen();
 		document.getElementById("gh_app").style.display = "none";
 		document.getElementById("uiblock").style.display = "block";
@@ -75,38 +58,9 @@
 		document.getElementById("ga_app").style.display = "block";
 	}
 	
-	
-  	var firebaseConfig = {
-    		apiKey: "AIzaSyCyaZuTbX4Q1dMQ5xU4j6M0Logq3rTDPyY",
-    		authDomain: "maya-apartment.firebaseapp.com",
-    		databaseURL: "https://maya-apartment.firebaseio.com",
-    		projectId: "maya-apartment",
-    		storageBucket: "maya-apartment.appspot.com",
-    		messagingSenderId: "130716096865",
-    		appId: "1:130716096865:web:ff067b13be87db008a0d20"
-  	};
-	
-  	firebase.initializeApp(firebaseConfig);	
-	
-	if('serviceWorker' in navigator){
-		navigator.serviceWorker
-		.register('sw.js')
-		.then(function(registration){
-			firebase.messaging().useServiceWorker(registration);
-		})
-		.catch(function(err){});
-	}
-	
-	const messaging = firebase.messaging();
-	messaging.onMessage((payload) => {
-	  	console.log('Message received in foreground. ', payload);
-	});
-	
-	messaging.usePublicVapidKey("BJt-DSX6HivM7QMgHgNIdyyXjtP-sXuCyvTNt5kKAsCnjwc3zzEkp30z6Md53wyMU_HzGaM5Ha1WaB4wWC6kRis");
-	
 	function initurlload(){
-		if(Notification.permission == 'default')
-			alert("\nHello,\n\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\n\nWe will ask for your permission next.");
+		if(Notification.permission == 'default') 
+			alert("\nHello,\nPlease allow Maya Apartments @Rajarhat app to send notifications to you.\nWe will ask for your permission next.");
 		document.getElementById("uiblock").style.display = "block";
 		messaging.requestPermission()
 		.then(function(){
@@ -125,5 +79,53 @@
 			loadapp();
 		})	
 	}
+	
+	$(document).ready(function(){
+		document.getElementById("ga_app").style.display = "none";
+		let deferredPrompt;
+		const addBtn = document.getElementById('install-button');
+		addBtn.style.display = 'none';
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault();
+			deferredPrompt = e;
+			addBtn.style.display = 'block';
+			addBtn.addEventListener('click', (e) => {
+				addBtn.style.display = 'none';
+				deferredPrompt.prompt();
+				deferredPrompt.userChoice.then((choiceResult) => {
+					deferredPrompt = null;
+				});
+			});
+		});
+		
+		var firebaseConfig = {
+			apiKey: "AIzaSyCyaZuTbX4Q1dMQ5xU4j6M0Logq3rTDPyY",
+			authDomain: "maya-apartment.firebaseapp.com",
+			databaseURL: "https://maya-apartment.firebaseio.com",
+			projectId: "maya-apartment",
+			storageBucket: "maya-apartment.appspot.com",
+			messagingSenderId: "130716096865",
+			appId: "1:130716096865:web:ff067b13be87db008a0d20"
+		};
+
+		firebase.initializeApp(firebaseConfig);	
+
+		if('serviceWorker' in navigator){
+			navigator.serviceWorker
+			.register('sw.js')
+			.then(function(registration){
+				firebase.messaging().useServiceWorker(registration);
+			})
+			.catch(function(err){});
+		}
+
+		const messaging = firebase.messaging();
+		messaging.onMessage((payload) => {
+			console.log('Message received in foreground. ', payload);
+		});
+
+		messaging.usePublicVapidKey("BJt-DSX6HivM7QMgHgNIdyyXjtP-sXuCyvTNt5kKAsCnjwc3zzEkp30z6Md53wyMU_HzGaM5Ha1WaB4wWC6kRis");	
+		document.getElementById("signin-button").style.display = "block";
+	});
 	
 </script>
